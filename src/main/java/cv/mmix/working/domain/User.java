@@ -26,6 +26,7 @@ public class User implements UserDetails {
     private String lastName;
     private String companyName;
     private Date registrationDate;
+    private Date lastModifiedDate;
     private String imageName;
 
     @NotBlank(message = "This field cannot be empty")
@@ -190,6 +191,14 @@ public class User implements UserDetails {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     //    public String getActivationCode() {

@@ -68,17 +68,6 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Old password : </label>
-            <div class="col-sm-6">
-                <input class="form-control  ${(passwordError??)?string('is-invalid','')}" type="password" name="password0" placeholder="old password"/>
-                 <#if passwordError??>
-                        <div class="invalid-feedback">
-                            ${passwordError}
-                        </div>
-                 </#if>
-            </div>
-        </div>
-        <div class="form-group row">
             <label class="col-sm-2 col-form-label">New password : </label>
             <div class="col-sm-6">
                 <input class="form-control  ${(passwordError??)?string('is-invalid','')}" type="password" name="password" placeholder="password"/>

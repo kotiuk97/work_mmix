@@ -23,6 +23,7 @@ public class Resume {
     private int salary;
     private boolean available;
     private Date publicationDate;
+    private Date lastModifiedDate;
 
     public Resume() {
     }
@@ -89,5 +90,13 @@ public class Resume {
 
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

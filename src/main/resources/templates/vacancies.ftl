@@ -7,7 +7,7 @@
             <div class="card my-3" style="width: 18rem;">
                 <div>
                  <#if vacancy.employe.imageName??>
-                     <img src="/img/${vacancy.employe.imageName}" class="card-img-top" alt="">
+                     <img src="/img/users/${vacancy.employe.imageName}" class="card-img-top" alt="no photo">
                  </#if>
                 </div>
                 <span class="m-2">${vacancy.name}</span>

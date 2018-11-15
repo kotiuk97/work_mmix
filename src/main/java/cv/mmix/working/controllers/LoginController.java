@@ -31,7 +31,7 @@ public class LoginController {
     @Autowired
     private UserRepo userRepo;
 
-    @Value("${upload.path}")
+    @Value("${users.images.upload.path}")
     private String uploadPath;
 
     @GetMapping("/rabota/registration")
@@ -59,27 +59,14 @@ public class LoginController {
 //            model.addAttribute("captchaError", "Fill captcha");
 //        }
 
-//        User user = new User("ser", "kot", "1212", "mail", "pass", Role.ADM, "asd", true, false);
-//        User usr = userRepo.findByEmail(user.getEmail());
-//        if (usr != null){
-//            model.addAttribute("message", "User already exists!");
-//            return "registration";
-//        }
-//        user.setRole(Role.USER);
         if (image != null){
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
-                uploadDir.mkdirs();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + image.getOriginalFilename();
-            image.transferTo(new File(uploadPath + "/" + resultFileName));
-            user.setImageName(resultFileName);
+            user.setImageName(uploadImage(image));
 
         }
         user.setActive(true);
         user.setRole(Role.USER);
         user.setRegistrationDate(new Date(Calendar.getInstance().getTime().getTime()));
+        user.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
 //        user.setUsername(user.getFirstName());
         userRepo.save(user);
 //        userService.addUser(user);
@@ -106,6 +93,22 @@ public class LoginController {
         return "redirect:/login";
     }
 
+    /**
+     * Returns image name
+     * @param image
+     * @return
+     */
+    private String uploadImage(MultipartFile image) throws IOException {
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()){
+            uploadDir.mkdirs();
+        }
+        String uuidFile = UUID.randomUUID().toString();
+        String fileName = uuidFile + "." + image.getOriginalFilename();
+        image.transferTo(new File(uploadPath + "/" + fileName));
+        return fileName;
+    }
+
     @PostMapping("/rabota/employer/registration")
     public String addEmployer(
             @RequestParam MultipartFile image,
@@ -122,19 +125,13 @@ public class LoginController {
 //
 //        user.setRegistrationDate(new Date());
         if (image != null) {
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
-                uploadDir.mkdirs();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String fileName = uuidFile + "." + image.getOriginalFilename();
-            image.transferTo(new File(uploadPath + "/" + fileName));
-            user.setImageName(fileName);
+            user.setImageName(uploadImage(image));
 
         }
         user.setActive(true);
         user.setRole(Role.EMPLOYER);
         user.setRegistrationDate(new Date(Calendar.getInstance().getTime().getTime()));
+        user.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
         userRepo.save(user);
 
 //        boolean isConfirmEmpty = Strings.isEmpty(passwordConfirmation);

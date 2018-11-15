@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +31,7 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    @Value("${upload.path}")
+    @Value("${users.images.upload.path}")
     private String uploadPath;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -91,49 +93,100 @@ public class UserController {
 
 
     @PostMapping("/rabota/user/editUser")
-    public String editUser(
-            @Valid User user,
+    public String updateUser(
+//            @Valid User user,
+            @RequestParam Long id,
+            @RequestParam (defaultValue = "") String firstName,
+            @RequestParam (defaultValue = "") String lastName,
+            @RequestParam (defaultValue = "") String email,
+            @RequestParam (defaultValue = "") String phoneNumber,
+            @RequestParam (defaultValue = "") String password,
+            @RequestParam (defaultValue = "") String password2,
             @RequestParam MultipartFile image,
             Model model
     ) throws IOException {
-        if (image != null) {
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
-                uploadDir.mkdirs();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String fileName = uuidFile + "." + image.getOriginalFilename();
-            image.transferTo(new File(uploadPath + "/" + fileName));
-            user.setImageName(fileName);
-
+        User user = userRepo.findById(id).get();
+        if (!firstName.isEmpty()){
+            user.setFirstName(firstName);
         }
+        if (!lastName.isEmpty()){
+            user.setLastName(lastName);
+        }
+        if (!email.isEmpty()){
+            user.setEmail(email);
+        }
+        if (!phoneNumber.isEmpty()){
+            user.setPhoneNumber(phoneNumber);
+        }
+        if (!password.isEmpty()){
+            if (password.equals(password2)){
+                user.setPassword(password);
+            }else{
+                return "userEdit";
+            }
+        }
+        if (image != null){
+            user.setImageName(uploadImage(image));
+        }
+        user.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
         userRepo.save(user);
 
-        return "redirect:/rabota/main";
+        return "redirect:/rabota";
     }
 
     @PostMapping("/rabota/user/editEmployer")
-    public String editEmployer(
+    public String updateEmployer(
+            @RequestParam Long id,
+            @RequestParam (defaultValue = "") String companyName,
+            @RequestParam (defaultValue = "") String email,
+            @RequestParam (defaultValue = "") String phoneNumber,
+            @RequestParam (defaultValue = "") String password,
+            @RequestParam (defaultValue = "") String password2,
             @RequestParam MultipartFile image,
-            @Valid User user,
+//            @Valid User user,
             Model model
     ) throws IOException {
-        if (image != null) {
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
-                uploadDir.mkdirs();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String fileName = uuidFile + "." + image.getOriginalFilename();
-            image.transferTo(new File(uploadPath + "/" + fileName));
-            user.setImageName(fileName);
-
+        User employer = userRepo.findById(id).get();
+        if (!companyName.isEmpty()){
+            employer.setCompanyName(companyName);
         }
-        userRepo.save(user);
+        if (!email.isEmpty()){
+            employer.setEmail(email);
+        }
+        if (!phoneNumber.isEmpty()){
+            employer.setPhoneNumber(phoneNumber);
+        }
+        if (!password.isEmpty()){
+            if (password.equals(password2)){
+                employer.setPassword(password);
+            }else{
+                return "editEmployer";
+            }
+        }
+        if (image != null){
+            employer.setImageName(uploadImage(image));
+        }
+        employer.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
+        userRepo.save(employer);
 
-        return "redirect:/rabota/main";
+        return "redirect:/rabota/";
     }
 
+    /**
+     * Returns image name
+     * @param image
+     * @return
+     */
+    private String uploadImage(MultipartFile image) throws IOException {
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()){
+            uploadDir.mkdirs();
+        }
+        String uuidFile = UUID.randomUUID().toString();
+        String fileName = uuidFile + "." + image.getOriginalFilename();
+        image.transferTo(new File(uploadPath + "/" + fileName));
+        return fileName;
+    }
 
 
  /*   @PreAuthorize("hasAuthority('ADMIN')")      //only admin has access to here

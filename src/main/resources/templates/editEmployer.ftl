@@ -3,7 +3,7 @@
 <@c.page>
 
     <form action="/rabota/user/editEmployer" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="userId" value="${user.id}">
+        <input type="hidden" name="id" value="${user.id}">
         <h5 class="text-center mb-5 px-5 alert alert-primary">Editing employer</h5>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label"> Company name : </label>
@@ -22,7 +22,7 @@
                 <label class="col-sm-2 col-form-label">Email : </label>
                 <div class="col-sm-6">
                     <input class="form-control ${(emailError??)?string('is-invalid','')}"
-                           value="${user.email}" type="email" name="email" placeholder="some@some.com" readonly/>
+                           value="${user.email}" type="email" name="email" placeholder="some@some.com"/>
                 <#--value="<#if user??>${user.email}</#if>" type="email" name="email" placeholder="some@some.com"/>-->
                      <#if emailError??>
                         <div class="invalid-feedback">
@@ -51,17 +51,6 @@
                         <input class="form-control " type="file" name="image" id="image"/>
                         <label class="custom-file-label" for="image">Choose an image  : </label>
                     </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Old password : </label>
-                <div class="col-sm-6">
-                    <input class="form-control  ${(passwordError??)?string('is-invalid','')}" type="password" name="password0" placeholder="old password"/>
-                 <#if passwordError??>
-                        <div class="invalid-feedback">
-                            ${passwordError}
-                        </div>
-                 </#if>
                 </div>
             </div>
             <div class="form-group row">

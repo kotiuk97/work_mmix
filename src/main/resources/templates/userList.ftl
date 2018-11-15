@@ -28,7 +28,7 @@
     </tbody>
 </table>
 
-    <h5 class="text-center mb-3 alert alert-primary">List of companies</h5>
+    <h5 class="text-center mt-5 mb-3 alert alert-primary">List of companies</h5>
 <#--<h5>List of users</h5>-->
 <table class="table table-striped">
     <thead>
