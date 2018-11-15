@@ -4,16 +4,23 @@ import cv.mmix.working.domain.Role;
 import cv.mmix.working.domain.User;
 import cv.mmix.working.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class LoginController {
@@ -23,6 +30,9 @@ public class LoginController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @GetMapping("/rabota/registration")
     public String registration(){
@@ -36,11 +46,12 @@ public class LoginController {
 
     @PostMapping("/rabota/registration")
     public String addUser(
+            @RequestParam MultipartFile image,
 //            @RequestParam("password2") String passwordConfirmation,
             @Valid User user,
 //            BindingResult bindingResult,
 
-            Model model){
+            Model model) throws IOException {
 
 //        String URL = String.format(CAPTCHA_URL, recaptchaSecret, captchaResponse);
 //        CaptchaResponseDTO captchaResponseDTO = restTemplate.postForObject(URL, Collections.EMPTY_LIST, CaptchaResponseDTO.class);
@@ -55,6 +66,17 @@ public class LoginController {
 //            return "registration";
 //        }
 //        user.setRole(Role.USER);
+        if (image != null){
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()){
+                uploadDir.mkdirs();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + image.getOriginalFilename();
+            image.transferTo(new File(uploadPath + "/" + resultFileName));
+            user.setImageName(resultFileName);
+
+        }
         user.setActive(true);
         user.setRole(Role.USER);
         user.setRegistrationDate(new Date(Calendar.getInstance().getTime().getTime()));
@@ -86,10 +108,11 @@ public class LoginController {
 
     @PostMapping("/rabota/employer/registration")
     public String addEmployer(
+            @RequestParam MultipartFile image,
             @RequestParam("password2") String passwordConfirmation,
             @Valid User user,
             BindingResult bindingResult,
-            Model model){
+            Model model) throws IOException {
 //        User usr = userRepo.findByEmail(user.getEmail());
 //        if (usr != null){
 //            model.addAttribute("message", "User already exists!");
@@ -98,6 +121,17 @@ public class LoginController {
 //        user.setRole(Role.EMPLOYER);
 //
 //        user.setRegistrationDate(new Date());
+        if (image != null) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()){
+                uploadDir.mkdirs();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            String fileName = uuidFile + "." + image.getOriginalFilename();
+            image.transferTo(new File(uploadPath + "/" + fileName));
+            user.setImageName(fileName);
+
+        }
         user.setActive(true);
         user.setRole(Role.EMPLOYER);
         user.setRegistrationDate(new Date(Calendar.getInstance().getTime().getTime()));
@@ -161,17 +195,6 @@ public class LoginController {
 //        }
 //    }
 
-    @GetMapping("/rabota/employer/login")
-    public String employersLogin(){
-        return "employer-login";
-    }
-
-    @GetMapping("/rabota/admin/userList")
-    public String userList(
-            Model model){
-        model.addAttribute("users", userRepo.findAll());
-        return "userList";
-    }
 
 //    @GetMapping("/activate/{code}")
 //    public String activate(

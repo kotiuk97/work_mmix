@@ -6,7 +6,7 @@
             ${message}
         </div>
     </#if>
-     <form action="/rabota/registration" method="post">
+     <form action="/rabota/registration" method="post" enctype="multipart/form-data">
          <h5 class="text-center mb-5 px-5 alert alert-primary">Registration</h5>
          <div class="form-group row">
              <label class="col-sm-2 col-form-label"> First name : </label>
@@ -54,6 +54,15 @@
                             ${phoneNumberError}
                         </div>
                      </#if>
+             </div>
+         </div>
+         <div class="form-group row">
+             <label class="col-sm-2 col-form-label">Photo: </label>
+             <div class="col-sm-6">
+                 <div class="custom-file">
+                     <input class="form-control " type="file" name="image" id="image"/>
+                     <label class="custom-file-label" for="image">Choose an image  : </label>
+                 </div>
              </div>
          </div>
          <div class="form-group row">

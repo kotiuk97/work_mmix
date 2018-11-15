@@ -10,7 +10,9 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long employeId;
+    @ManyToOne
+    private User employe;
+
     private String name;
     private String contactPerson;
     private String phoneNumber;
@@ -27,8 +29,8 @@ public class Vacancy {
     public Vacancy() {
     }
 
-    public Vacancy(Long employeId, String name, String contactPerson, String phoneNumber, String city, int salary, String email, String description) {
-        this.employeId = employeId;
+    public Vacancy(User employe, String name, String contactPerson, String phoneNumber, String city, int salary, String email, String description) {
+        this.employe = employe;
         this.name = name;
         this.contactPerson = contactPerson;
         this.phoneNumber = phoneNumber;
@@ -46,12 +48,12 @@ public class Vacancy {
         this.id = id;
     }
 
-    public Long getEmployeId() {
-        return employeId;
+    public User getEmploye() {
+        return employe;
     }
 
-    public void setEmployeId(Long employeId) {
-        this.employeId = employeId;
+    public void setEmploye(User employe) {
+        this.employe = employe;
     }
 
     public String getName() {

@@ -1,7 +1,9 @@
 package cv.mmix.working.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -10,8 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
 //public class MvcConfig{
 
-//    @Value("${upload.path}")
-//    private String uploadPath;
+    @Value("${upload.path}")
+    private String uploadPath;
 
 //    @Bean
 //    public RestTemplate getRestTemplate(){
@@ -24,11 +26,11 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/rabota").setViewName("rabota");
     }
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/img/**")
-//                .addResourceLocations("file:/" + uploadPath + "/");
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("file:/" + uploadPath + "/");
+    }
 
 
 }

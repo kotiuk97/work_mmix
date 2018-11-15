@@ -3,15 +3,20 @@ package cv.mmix.working.domain;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.sql.Date;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "usr")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +26,7 @@ public class User {
     private String lastName;
     private String companyName;
     private Date registrationDate;
+    private String imageName;
 
     @NotBlank(message = "This field cannot be empty")
     private String phoneNumber;
@@ -79,6 +85,19 @@ public class User {
             this.role = role;
         }
     */
+
+    public boolean isAdmin(){
+        return role.equals(Role.ADMIN);
+    }
+
+    public boolean isEmployer(){
+        return role.equals(Role.EMPLOYER);
+    }
+
+    public boolean isUser(){
+        return role.equals(Role.USER);
+    }
+
     public Long getId() {
         return id;
     }
@@ -119,8 +138,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(role);
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
     }
 
     public void setPassword(String password) {
@@ -135,7 +184,15 @@ public class User {
         this.role = role;
     }
 
-//    public String getActivationCode() {
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    //    public String getActivationCode() {
 //        return activationCode;
 //    }
 //
