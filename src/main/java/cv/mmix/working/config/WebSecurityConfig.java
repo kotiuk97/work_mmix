@@ -5,6 +5,7 @@ import cv.mmix.working.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,14 @@ import javax.sql.DataSource;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private String[] allowUnauthorized = {"/rabota",
+            "/rabota/login", "/rabota/registration", "/rabota/employer/registration",
+            "/rabota/vacancies", "/rabota/vacancy/*",
+            "/rabota/resumes", "/rabota/resumes/*",
+            "/img/**"};
+
+    private String[] allowAdminOnly = {"/rabota/userList"};
+
     @Qualifier("dataSource")
     @Autowired
     private DataSource dataSource;
@@ -31,7 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/login","/rabota/vacancies", "/rabota/registration", "/rabota/login", "/rabota/employer/registration").permitAll()
+                    .antMatchers(allowUnauthorized).permitAll()
+//                    .antMatchers(allowAdminOnly).hasRole("ADMIN")
                     .anyRequest().authenticated()
 //                .and()
 //                    .rememberMe()
@@ -41,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
 //                    .usernameParameter("email")
                 .defaultSuccessUrl("/rabota")
-                .failureUrl("/rabota/login")
+                .failureUrl("/login")
                     .permitAll()
                 .and()
                     .logout()

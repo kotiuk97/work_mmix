@@ -1,6 +1,7 @@
 package cv.mmix.working.controllers;
 
 import cv.mmix.working.domain.Role;
+import cv.mmix.working.domain.Uploader;
 import cv.mmix.working.domain.User;
 import cv.mmix.working.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,10 @@ public class LoginController {
     private UserRepo userRepo;
 
     @Value("${users.images.upload.path}")
-    private String uploadPath;
+    private String imageUploadPath;
+
+    @Value("${cv.upload.path}")
+    private String cvUploadPath;
 
     @GetMapping("/rabota/registration")
     public String registration(){
@@ -60,7 +64,7 @@ public class LoginController {
 //        }
 
         if (image != null){
-            user.setImageName(uploadImage(image));
+            user.setImageName(Uploader.uploadFile(image, imageUploadPath));
 
         }
         user.setActive(true);
@@ -93,22 +97,6 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    /**
-     * Returns image name
-     * @param image
-     * @return
-     */
-    private String uploadImage(MultipartFile image) throws IOException {
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()){
-            uploadDir.mkdirs();
-        }
-        String uuidFile = UUID.randomUUID().toString();
-        String fileName = uuidFile + "." + image.getOriginalFilename();
-        image.transferTo(new File(uploadPath + "/" + fileName));
-        return fileName;
-    }
-
     @PostMapping("/rabota/employer/registration")
     public String addEmployer(
             @RequestParam MultipartFile image,
@@ -125,8 +113,7 @@ public class LoginController {
 //
 //        user.setRegistrationDate(new Date());
         if (image != null) {
-            user.setImageName(uploadImage(image));
-
+            user.setImageName(Uploader.uploadFile(image, imageUploadPath));
         }
         user.setActive(true);
         user.setRole(Role.EMPLOYER);

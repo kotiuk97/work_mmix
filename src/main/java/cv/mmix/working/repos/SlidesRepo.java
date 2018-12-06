@@ -8,5 +8,5 @@ import java.util.List;
 public interface SlidesRepo extends JpaRepository<Slide, Long> {
 
     Slide findByImageName(String imageName);
-    List<Slide> findAllByIsActive(Boolean isActive);
+    List<Slide> findAllByIsActiveTrue();
 }

@@ -1,5 +1,7 @@
 package cv.mmix.working.domain;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -10,8 +12,8 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private User employe;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User employer;
 
     private String name;
     private String contactPerson;
@@ -19,7 +21,7 @@ public class Vacancy {
     private String city;
     private int salary;
     private String email;
-    private boolean available;
+    private boolean isActive;
     private Date publicationDate;
     private Date lastModifiedDate;
 
@@ -30,14 +32,17 @@ public class Vacancy {
     public Vacancy() {
     }
 
-    public Vacancy(User employe, String name, String contactPerson, String phoneNumber, String city, int salary, String email, String description) {
-        this.employe = employe;
+    public Vacancy(User employer, String name, String contactPerson, String phoneNumber, String city, int salary, String email, boolean isActive, Date publicationDate, Date lastModifiedDate, String description) {
+        this.employer = employer;
         this.name = name;
         this.contactPerson = contactPerson;
         this.phoneNumber = phoneNumber;
         this.city = city;
         this.salary = salary;
         this.email = email;
+        this.isActive = isActive;
+        this.publicationDate = publicationDate;
+        this.lastModifiedDate = lastModifiedDate;
         this.description = description;
     }
 
@@ -49,12 +54,12 @@ public class Vacancy {
         this.id = id;
     }
 
-    public User getEmploye() {
-        return employe;
+    public User getEmployer() {
+        return employer;
     }
 
-    public void setEmploye(User employe) {
-        this.employe = employe;
+    public void setEmployer(User employer) {
+        this.employer = employer;
     }
 
     public String getName() {
@@ -113,12 +118,12 @@ public class Vacancy {
         this.description = description;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
     public Date getPublicationDate() {

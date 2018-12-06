@@ -1,8 +1,9 @@
 package cv.mmix.working.controllers;
 
-import cv.mmix.working.domain.Role;
-import cv.mmix.working.domain.User;
+import cv.mmix.working.domain.*;
+import cv.mmix.working.repos.ResumeRepo;
 import cv.mmix.working.repos.UserRepo;
+import cv.mmix.working.repos.VacancyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,8 +32,17 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private VacancyRepo vacancyRepo;
+
+    @Autowired
+    private ResumeRepo resumeRepo;
+
     @Value("${users.images.upload.path}")
     private String uploadPath;
+
+    @Value("${cv.upload.path}")
+    private String cvUploadPath;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/rabota/userList")
@@ -103,6 +113,7 @@ public class UserController {
             @RequestParam (defaultValue = "") String password,
             @RequestParam (defaultValue = "") String password2,
             @RequestParam MultipartFile image,
+            @RequestParam MultipartFile cv,
             Model model
     ) throws IOException {
         User user = userRepo.findById(id).get();
@@ -126,7 +137,10 @@ public class UserController {
             }
         }
         if (image != null){
-            user.setImageName(uploadImage(image));
+            user.setImageName(Uploader.uploadFile(image, uploadPath));
+        }
+        if (cv != null){
+            user.setImageName(Uploader.uploadFile(image, cvUploadPath));
         }
         user.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
         userRepo.save(user);
@@ -164,30 +178,51 @@ public class UserController {
             }
         }
         if (image != null){
-            employer.setImageName(uploadImage(image));
+            employer.setImageName(Uploader.uploadFile(image, uploadPath));
         }
         employer.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
         userRepo.save(employer);
 
-        return "redirect:/rabota/";
+        return "redirect:/rabota";
     }
 
-    /**
-     * Returns image name
-     * @param image
-     * @return
-     */
-    private String uploadImage(MultipartFile image) throws IOException {
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()){
-            uploadDir.mkdirs();
+    @GetMapping("/rabota/user/activation/{user}")
+    public String activation(@PathVariable User user){
+        user.setActive(!user.isActive());
+        user.setLastModifiedDate(new Date(Calendar.getInstance().getTime().getTime()));
+        Resume resume = resumeRepo.findById(user.getId()).get();
+        if (resume != null){
+            resume.setActive(!user.isActive());
+            resumeRepo.save(resume);
         }
-        String uuidFile = UUID.randomUUID().toString();
-        String fileName = uuidFile + "." + image.getOriginalFilename();
-        image.transferTo(new File(uploadPath + "/" + fileName));
-        return fileName;
+        userRepo.save(user);
+        return "redirect:/userList";
     }
 
+    @GetMapping("/rabota/user/delete/{user}")
+    public String delete(@PathVariable User user){
+        File image = new File(uploadPath + "/" + user.getImageName());
+        if (image.exists()){
+            image.delete();
+        }
+        File cv = new File(cvUploadPath + "/" + user.getCvFileName());
+        if (cv.exists()){
+            cv.delete();
+        }
+        userRepo.delete(user);
+        return "redirect:/userList";
+    }
+
+
+    @GetMapping("/rabota/user/vacancyList")
+    public String vacancies(
+            @AuthenticationPrincipal User user,
+            Model model){
+        List<Vacancy> vacancies = vacancyRepo.findAll();
+//        List<Vacancy> vacancies = vacancyRepo.findAllByEmploye(user);
+        model.addAttribute("vacancies", vacancies);
+        return "vacancyList";
+    }
 
  /*   @PreAuthorize("hasAuthority('ADMIN')")      //only admin has access to here
     @PostMapping

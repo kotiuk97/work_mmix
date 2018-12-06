@@ -1,29 +1,53 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    <form action="/rabota/resume" method="post">
-        <h3 class="text-center mb-3 alert alert-primary">Create a vacancy</h3>
+    <h3 class="text-center mb-3 alert alert-primary">Resumes</h3>
+
+    <#if resume.user.imageName??>
+    <div style="width: 100px">
+        <img src="/img/users/${resume.user.imageName}" style="max-height: 300px; max-width: 300px; padding-right: 50px; padding-top: 70px" class="rounded float-right fixed-top ml-auto" alt="no photo available">
+
+    </div>
+
+            <#--<div class="form-group row">-->
+                <#--<label for="name" class="col-sm-2 col-form-label">Employer</label>-->
+                <#--<img src="/img/users/${resume.user.imageName}" alt="no photo">-->
+            <#--</div>-->
+    </#if>
+    <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Resume name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" id="name" value="${resume.name}" readonly>
+        </div>
+    </div>
         <div class="form-group row">
-            <label for="name" class="col-sm-2 col-form-label">Vacancy name</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="name" id="name" placeholder="e.g. Manager">
+            <label class="col-sm-2 col-form-label">Name : </label>
+            <div class="col-sm-6">
+                <input class="form-control "
+                       value="${resume.user.lastName} ${resume.user.firstName}" type="text" name="username" readonly/>
+
+            </div>
+        </div>
+    <#if resume.showPhoneNumber>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label">Phone number</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="${resume.user.phoneNumber}" readonly>
+                </div>
+            </div>
+    </#if>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email : </label>
+            <div class="col-sm-6">
+                <input class="form-control"
+                       value="${resume.user.email}" type="email" name="email" readonly/>
             </div>
         </div>
         <div class="form-group row">
             <label for="description" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
-                <textarea class="form-control" rows="15" name="description" id="description" placeholder="education&#10;obligations&#10;conditions"></textarea>
+                <textarea class="form-control" rows="15" name="description" id="description" readonly>${resume.description}</textarea>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="showPhoneNumber" class="col-form-label">Show phone number
-                <input type="checkbox" class="col-form-label" name="showPhoneNumber" id="showPhoneNumber" >
-            </label>
-        </div>
 
-        <div class="mt-4 mb-5 text-center">
-            <button type="submit" class="btn btn-primary col-3">Publish</button>
-        </div>
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-    </form>
 </@c.page>

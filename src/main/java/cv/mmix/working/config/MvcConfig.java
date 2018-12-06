@@ -32,11 +32,13 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/img/users/**")
+                .addResourceLocations("file://" + userUploadPath + "/");
+
         registry.addResourceHandler("/img/slider/**")
                 .addResourceLocations("file://" + sliderUploadPath + "/");
 
-        registry.addResourceHandler("/img/users/**")
-                .addResourceLocations("file://" + userUploadPath + "/");
+
     }
 
 

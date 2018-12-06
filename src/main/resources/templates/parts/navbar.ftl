@@ -9,17 +9,14 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <#if isAdmin>
-            <ul class="navbar-nav mr-1">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/rabota/userList">Users list</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/rabota/slides">Slides list</a>
                 </li>
             </ul>
-
         </#if>
         <#if isUser>
         <ul class="navbar-nav mr-auto">
@@ -33,6 +30,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/rabota/user/editEmployer">Edit employer</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/rabota/user/vacancyList">My vacancies</a>
+                </li>
             </ul>
         </#if>
 
@@ -40,12 +40,16 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
+
             <li class="nav-item">
                 <a class="nav-link" href="/rabota/vacancies">Find a job</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rabota/resumes">Find an employer</a>
+            </li>
             <#if isUser>
                 <li class="nav-item">
-                    <a class="nav-link" href="/rabota/resume">Post a resumes</a>
+                    <a class="nav-link" href="/rabota/resume">My resume</a>
                 </li>
             </#if>
             <#if isEmployer>
@@ -58,7 +62,7 @@
                 <#if known>
                     <form action="/logout" method="post">
                         <button type="submit" class="nav-link alert-primary px-2 rounded ml-2">Log
-                            out ${username}</button>
+                            out, ${username}</button>
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                     </form>
                 <#else>

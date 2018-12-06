@@ -28,6 +28,7 @@ public class User implements UserDetails {
     private Date registrationDate;
     private Date lastModifiedDate;
     private String imageName;
+    private String cvFileName;
 
     @NotBlank(message = "This field cannot be empty")
     private String phoneNumber;
@@ -208,22 +209,15 @@ public class User implements UserDetails {
 //    public void setActivationCode(String activationCode) {
 //        this.activationCode = activationCode;
 //    }
-//
-//    public boolean isActive() {
-//        return isActive;
-//    }
-//
-//    public void setActive(boolean active) {
-//        isActive = active;
-//    }
-//
-//    public boolean isBlocked() {
-//        return isBlocked;
-//    }
-//
-//    public void setBlocked(boolean blocked) {
-//        isBlocked = blocked;
-//    }
+
+
+    public String getCvFileName() {
+        return cvFileName;
+    }
+
+    public void setCvFileName(String cvFileName) {
+        this.cvFileName = cvFileName;
+    }
 
     public Date getRegistrationDate() {
         return registrationDate;

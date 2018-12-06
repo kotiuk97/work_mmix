@@ -6,15 +6,27 @@
 <#if known>
     <#assign
         user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
-        username = user.getEmail()
         <#--isAdmin = user.getAuthorities()?seq_contains('ADMIN')-->
         isAdmin = user.isAdmin()
         isEmployer = user.isEmployer()
-        isEmployer =  user.getAuthorities()?seq_contains('EMPLOYER')
-        isUser = user.isUser() isEmployer = user.isEmployer()
+        <#--isEmployer =  user.getAuthorities()?seq_contains('EMPLOYER')-->
+        isUser = user.isUser()
         <#--isUser =  user.getAuthorities()?seq_contains('USER')-->
-
     >
+    <#if isUser>
+        <#assign
+            username = user.getLastName() + " " + user.getFirstName()
+        >
+    <#elseif isEmployer>
+        <#assign
+        username = user.getCompanyName()
+        >
+    <#else >
+        <#assign
+            username = "admin"
+        >
+    </#if>
+
 <#else >
     <#assign
     isAdmin = false

@@ -66,6 +66,15 @@
              </div>
          </div>
          <div class="form-group row">
+             <label class="col-sm-2 col-form-label">CV: </label>
+             <div class="col-sm-6">
+                 <div class="custom-file">
+                     <input class="form-control " type="file" name="cv" id="cv"/>
+                     <label class="custom-file-label" for="cv">Upload your CV  : </label>
+                 </div>
+             </div>
+         </div>
+         <div class="form-group row">
              <label class="col-sm-2 col-form-label">Password : </label>
              <div class="col-sm-6">
                  <input class="form-control  ${(passwordError??)?string('is-invalid','')}" type="password" name="password" placeholder="password"/>

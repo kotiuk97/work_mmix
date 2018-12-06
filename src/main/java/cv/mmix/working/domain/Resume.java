@@ -11,7 +11,7 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Column(columnDefinition = "TEXT")
@@ -21,7 +21,7 @@ public class Resume {
     private String name;
     private boolean showPhoneNumber;
     private int salary;
-    private boolean available;
+    private boolean isActive;
     private Date publicationDate;
     private Date lastModifiedDate;
 
@@ -76,12 +76,12 @@ public class Resume {
         this.salary = salary;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
     public Date getPublicationDate() {

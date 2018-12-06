@@ -1,7 +1,10 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-        <h3 class="text-center mb-3 alert alert-primary">Vacancy</h3>
+    <form action="/rabota/vacancy/update" method="post">
+        <h3 class="text-center mb-3 alert alert-primary">Edit a vacancy</h3>
+        <input type="hidden" name="id" value="${vacancy.id}">
+
 
         <div class="form-group row">
             <label for="name" class="col-sm-2 col-form-label">Vacancy name</label>
@@ -20,8 +23,7 @@
         <div class="form-group row">
             <label for="contactPerson" class="col-sm-2 col-form-label">Contact person</label>
             <div class="col-sm-10" id="contactPerson">
-                <input type="text" class="form-control" name="contactPerson"
-                       value="${vacancy.contactPerson}">
+                <input type="text" class="form-control" name="contactPerson" value="${vacancy.contactPerson}">
             </div>
         </div>
 
@@ -52,5 +54,11 @@
                 <input type="email" class="form-control" name="email" id="email" value="${vacancy.email}">
             </div>
         </div>
+
+        <div class="mt-4 mb-5 text-center">
+            <button type="submit" class="btn btn-primary col-3">Publish</button>
+        </div>
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+    </form>
 
 </@c.page>
