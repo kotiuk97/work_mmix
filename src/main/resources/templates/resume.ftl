@@ -1,18 +1,14 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    <h3 class="text-center mb-3 alert alert-primary">Resumes</h3>
-
+    <h3 class="text-center mb-4 alert alert-primary">Resumes</h3>
     <#if resume.user.imageName??>
-    <div style="width: 100px">
-        <img src="/img/users/${resume.user.imageName}" style="max-height: 300px; max-width: 300px; padding-right: 50px; padding-top: 70px" class="rounded float-right fixed-top ml-auto" alt="no photo available">
-
-    </div>
-
-            <#--<div class="form-group row">-->
-                <#--<label for="name" class="col-sm-2 col-form-label">Employer</label>-->
-                <#--<img src="/img/users/${resume.user.imageName}" alt="no photo">-->
-            <#--</div>-->
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Image : </label>
+                <div class="col-sm-6">
+                    <img src="/img/users/${resume.user.imageName}" style="max-height: 500px; max-width: 500px;" class="rounded" alt="no photo available">
+                </div>
+            </div>
     </#if>
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Resume name</label>
@@ -31,7 +27,7 @@
     <#if resume.showPhoneNumber>
             <div class="form-group row">
                 <label for="name" class="col-sm-2 col-form-label">Phone number</label>
-                <div class="col-sm-10">
+                <div class="col-sm-6">
                     <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="${resume.user.phoneNumber}" readonly>
                 </div>
             </div>
@@ -45,7 +41,7 @@
         </div>
         <div class="form-group row">
             <label for="description" class="col-sm-2 col-form-label">Description</label>
-            <div class="col-sm-10">
+            <div class="col-sm-10 mb-5">
                 <textarea class="form-control" rows="15" name="description" id="description" readonly>${resume.description}</textarea>
             </div>
         </div>

@@ -50,7 +50,7 @@ public class MainController {
 //    }
 
     @GetMapping ("/rabota/slides")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public String getSlides(Model model){
         List<Slide> slides = slidesRepo.findAll();
         model.addAttribute("slides", slides);

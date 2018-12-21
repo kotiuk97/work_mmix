@@ -60,7 +60,7 @@
              <label class="col-sm-2 col-form-label">Photo: </label>
              <div class="col-sm-6">
                  <div class="custom-file">
-                     <input class="form-control " type="file" name="image" id="image"/>
+                     <input class="form-control custom-file-input" type="file" name="image" id="image"/>
                      <label class="custom-file-label" for="image">Choose an image  : </label>
                  </div>
              </div>
@@ -69,7 +69,7 @@
              <label class="col-sm-2 col-form-label">CV: </label>
              <div class="col-sm-6">
                  <div class="custom-file">
-                     <input class="form-control " type="file" name="cv" id="cv"/>
+                     <input class="form-control custom-file-input" type="file" name="cv" id="cv"/>
                      <label class="custom-file-label" for="cv">Upload your CV  : </label>
                  </div>
              </div>

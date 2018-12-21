@@ -44,7 +44,7 @@ public class UserController {
     @Value("${cv.upload.path}")
     private String cvUploadPath;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/rabota/userList")
     public String userList(
             Model model){
@@ -80,8 +80,8 @@ public class UserController {
             @PathVariable User user,
             Model model
     ){
-        model.addAttribute("user", user);
-        return "userEdit";
+        model.addAttribute("employer", user);
+        return "editEmployer";
     }
 
 

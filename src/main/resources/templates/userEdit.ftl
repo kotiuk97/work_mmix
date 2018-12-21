@@ -11,17 +11,15 @@
     <form action="/rabota/user/editUser" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="${user.id}">
 
-        <h5 class="text-center mb-5 px-5 alert alert-primary">Editing</h5>
-    <#if user.imageName??>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> First name : </label>
-            <div class="col-sm-6">
-                <img src="/img/users/${user.imageName}" style="max-height: 300px; max-width: 300px; padding-right: 50px; padding-top: 70px" class="form-control rounded float-right fixed-top ml-auto" alt="no photo available">
+        <h5 class="text-center mb-5 px-5 alert alert-primary">Edit account</h5>
+        <#if user.imageName??>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Image : </label>
+                <div class="col-sm-6">
+                    <img src="/img/users/${user.imageName}" style="max-height: 500px; max-width: 500px;" class="rounded" alt="no photo available">
+                </div>
             </div>
-        </div>
-    </#if>
-
-
+        </#if>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> First name : </label>
             <div class="col-sm-6">
@@ -78,7 +76,7 @@
             <label class="col-sm-2 col-form-label">Photo: </label>
             <div class="col-sm-6">
                 <div class="custom-file">
-                    <input class="form-control " type="file" name="image" id="image"/>
+                    <input class="form-control custom-file-input" type="file" name="image" id="image"/>
                     <label class="custom-file-label" for="image">Choose an image  : </label>
                 </div>
             </div>
@@ -87,7 +85,7 @@
             <label class="col-sm-2 col-form-label">CV: </label>
             <div class="col-sm-6">
                 <div class="custom-file">
-                    <input class="form-control " type="file" name="cv" id="cv"/>
+                    <input class="custom-file-input" type="file" name="cv" id="cv"/>
                     <label class="custom-file-label" for="cv">Upload your CV  : </label>
                 </div>
             </div>
